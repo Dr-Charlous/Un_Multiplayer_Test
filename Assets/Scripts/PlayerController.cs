@@ -5,8 +5,10 @@ using Photon.Pun;
 
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField] float _speed = 1;
+    [SerializeField] float _speed = 10, _speedLimit = 2;
+    [SerializeField] float _jumpForce = 2;
     [SerializeField] PhotonView _view;
+    [SerializeField] Rigidbody2D _rb;
 
     private void Start()
     {
@@ -17,12 +19,27 @@ public class PlayerController : MonoBehaviour
     {
         if (_view.IsMine)
         {
-            Vector3 inputDirection = new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+            //Vector3 inputDirection = new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
 
-            if (inputDirection != Vector3.zero)
+            //if (inputDirection != Vector3.zero)
+            //{
+            //    Vector3 movements = inputDirection * _speed * Time.deltaTime;
+            //    transform.position += movements;
+            //}
+
+            float xInput = Input.GetAxis("Horizontal");
+            Vector3 direction = Vector3.zero;
+
+            if (xInput != 0 && _rb.velocity.x <= _speedLimit && _rb.velocity.x >= -_speedLimit)
             {
-                Vector3 movements = inputDirection * _speed * Time.deltaTime;
-                transform.position += movements;
+                direction += Vector3.right * xInput * _speed;
+            }
+
+            _rb.AddForce(direction);
+
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                _rb.AddForce(Vector3.up * _jumpForce, ForceMode2D.Impulse);
             }
         }
     }

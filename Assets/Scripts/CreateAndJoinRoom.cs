@@ -17,7 +17,7 @@ public class CreateAndJoinRoom : MonoBehaviourPunCallbacks
 
     public void JoinRoom()
     {
-        if (CreateInput.text.Length > 0)
+        if (JoinInput.text.Length > 0)
             PhotonNetwork.JoinRoom(JoinInput.text);
     }
 
