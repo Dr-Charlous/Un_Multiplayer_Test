@@ -53,7 +53,9 @@ MonoBehaviour:
   _speed: 10
   _speedLimit: 2
   _jumpForce: 5
-  _view: {fileID: 5417197201025353364}
+  _color: {r: 0, g: 0, b: 0, a: 1}
+  SpriteRenderer: {fileID: 3093115613348679786}
+  View: {fileID: 5417197201025353364}
   _rb: {fileID: 152845122394565679}
 --- !u!61 &6454008987089034000
 BoxCollider2D:

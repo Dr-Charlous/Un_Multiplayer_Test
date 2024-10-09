@@ -7,17 +7,27 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField] float _speed = 10, _speedLimit = 2;
     [SerializeField] float _jumpForce = 2;
-    [SerializeField] PhotonView _view;
+
+    [SerializeField] Color _color;
+    public SpriteRenderer SpriteRenderer;
+
+    public PhotonView View;
     [SerializeField] Rigidbody2D _rb;
 
     private void Start()
     {
-        _view = GetComponent<PhotonView>();
+        View = GetComponent<PhotonView>();
+
+        //if (View.IsMine)
+        //{
+        //    _color = Random.ColorHSV();
+        //    SpriteRenderer.color = _color;
+        //}
     }
 
     private void Update()
     {
-        if (_view.IsMine)
+        if (View.IsMine)
         {
             //Vector3 inputDirection = new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
 
