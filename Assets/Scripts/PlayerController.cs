@@ -17,26 +17,12 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
         View = GetComponent<PhotonView>();
-
-        //if (View.IsMine)
-        //{
-        //    _color = Random.ColorHSV();
-        //    SpriteRenderer.color = _color;
-        //}
     }
 
     private void Update()
     {
         if (View.IsMine)
         {
-            //Vector3 inputDirection = new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
-
-            //if (inputDirection != Vector3.zero)
-            //{
-            //    Vector3 movements = inputDirection * _speed * Time.deltaTime;
-            //    transform.position += movements;
-            //}
-
             float xInput = Input.GetAxis("Horizontal");
             Vector3 direction = Vector3.zero;
 
