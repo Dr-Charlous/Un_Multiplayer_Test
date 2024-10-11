@@ -15,7 +15,7 @@ public class PlayerManager : MonoBehaviourPunCallbacks
         Hashtable playerProperties = new Hashtable { { "PlayerColor", ColorUtility.ToHtmlStringRGB(playerColor) } };
         PhotonNetwork.LocalPlayer.SetCustomProperties(playerProperties);
 
-        _player.SpriteRenderer.color = playerColor;
+        _player.Renderer.material.color = playerColor;
     }
 
     public override void OnPlayerPropertiesUpdate(Player player, Hashtable changedProps)
@@ -28,9 +28,9 @@ public class PlayerManager : MonoBehaviourPunCallbacks
             Color playerColor = Color.white;
             ColorUtility.TryParseHtmlString("#" + colorString, out playerColor);
 
-            if (player.ActorNumber == PhotonNetwork.LocalPlayer.ActorNumber)
+            if (_player.View.IsMine)
             {
-                _player.SpriteRenderer.color = playerColor;
+                _player.Renderer.material.color = playerColor;
             }
         }
     }

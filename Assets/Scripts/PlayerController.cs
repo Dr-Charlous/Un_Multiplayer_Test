@@ -5,38 +5,53 @@ using Photon.Pun;
 
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField] float _speed = 10, _speedLimit = 2;
-    [SerializeField] float _jumpForce = 2;
-
-    [SerializeField] Color _color;
-    public SpriteRenderer SpriteRenderer;
+    public float speed = 5f;
+    public float mouseSensitivity = 2f;
+    public Camera playerCamera;
+    private CharacterController controller;
+    private float verticalRotation = 0f;
 
     public PhotonView View;
-    [SerializeField] Rigidbody2D _rb;
+    public Renderer Renderer;
+    public GameObject Head;
+    public AudioListener audioListener;
 
-    private void Start()
+    void Start()
     {
-        View = GetComponent<PhotonView>();
+        controller = GetComponent<CharacterController>();
+        Cursor.lockState = CursorLockMode.Locked; // Verrouille le curseur au centre
+
+        if (!View.IsMine)
+        {
+            playerCamera.enabled = false;
+            Head.SetActive(true);
+            audioListener.enabled = false;
+        }
+        else
+        {
+            playerCamera.enabled = true;
+            Head.SetActive(false);
+            audioListener.enabled = true;
+        }
     }
 
-    private void Update()
+    void Update()
     {
         if (View.IsMine)
         {
-            float xInput = Input.GetAxis("Horizontal");
-            Vector3 direction = Vector3.zero;
+            // Mouvement
+            float moveX = Input.GetAxis("Horizontal");
+            float moveZ = Input.GetAxis("Vertical");
+            Vector3 move = transform.right * moveX + transform.forward * moveZ;
+            controller.Move(move * speed * Time.deltaTime);
 
-            if (xInput != 0 && _rb.velocity.x <= _speedLimit && _rb.velocity.x >= -_speedLimit)
-            {
-                direction += Vector3.right * xInput * _speed;
-            }
-
-            _rb.AddForce(direction);
-
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                _rb.AddForce(Vector3.up * _jumpForce, ForceMode2D.Impulse);
-            }
+            // Rotation de la caméra
+            float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity;
+            float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity;
+            verticalRotation -= mouseY;
+            verticalRotation = Mathf.Clamp(verticalRotation, -90f, 90f); // Limite la rotation verticale
+            playerCamera.transform.localRotation = Quaternion.Euler(verticalRotation, 0f, 0f);
+            transform.Rotate(Vector3.up * mouseX);
         }
     }
 }
